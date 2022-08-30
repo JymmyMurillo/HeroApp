@@ -143,7 +143,7 @@ export default function FiltersBar() {
         </div>
       </nav>
       <div className="d-flex flex-wrap justify-content-evenly align-items-center bg-dark text-light p-2">
-        <span>Busqueda aplicada => </span>
+        <span>Busqueda aplicada ={">"} </span>
         <span>Nombre: N/A</span>
         <span>Poder: N/A</span>
         <span>Apariencia: N/A</span>
