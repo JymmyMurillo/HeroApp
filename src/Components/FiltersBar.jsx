@@ -1,4 +1,37 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setToSearchResult, setToSearch } from "../redux/slices/allHeroes";
+
 export default function FiltersBar() {
+  const dispatch = useDispatch()
+  const [search, setSearch] = useState("");
+  const [name, setName] = useState("N/A");
+
+  const fetchInfo = async (name) => {
+    setName(search);
+    const url = process.env.React_App_BASIC_URL_API + "search/" + name;
+    const res = await fetch(url);
+    try { 
+      const data = await res.json();
+      dispatch(setToSearchResult(data.results));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleInputChange = ({ target }) => {
+    setSearch(target.value);
+    if (target.value.length === 0) {
+      dispatch(setToSearchResult(undefined));
+      setName("N/A");
+    }
+  };
+
+  const handleToSearch = () => {
+    fetchInfo(search);
+    dispatch(setToSearch(search));
+  }
+
   return (
     <>
       <nav className="navbar navbar-expand-md bg-danger bg-gradient">
@@ -21,14 +54,21 @@ export default function FiltersBar() {
             className="collapse navbar-collapse justify-content-around m-2 gap-5"
             id="navbarNavDropdown"
           >
-            <form class="d-flex w-100" role="search">
+            <form className="d-flex w-100" role="search">
               <input
-                class="form-control me-2"
+                id="InputSearch"
+                className="form-control me-2"
                 type="search"
                 placeholder="Buscar por nombre"
                 aria-label="Search"
-              ></input>
-              <button class="btn btn-outline-warning fs-3" type="submit">
+                value={search}
+                onChange={handleInputChange}
+              />
+              <button
+                className="btn btn-outline-warning fs-3"
+                type="button"
+                onClick={() => handleToSearch()}
+              >
                 Buscar
               </button>
             </form>
@@ -144,10 +184,10 @@ export default function FiltersBar() {
       </nav>
       <div className="d-flex flex-wrap justify-content-evenly align-items-center bg-dark text-light p-2">
         <span>Busqueda aplicada ={">"} </span>
-        <span>Nombre: N/A</span>
+        <span>{`Nombre: ${name}`}</span>
         <span>Poder: N/A</span>
         <span>Apariencia: N/A</span>
-        <button type="button" class="btn btn-danger border ">
+        <button type="button" className="btn btn-danger border ">
           Eliminar Busqueda
         </button>
       </div>
