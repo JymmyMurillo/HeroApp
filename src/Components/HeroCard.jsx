@@ -1,4 +1,11 @@
-export default function HeroCard({ cardContent, url, fullName }) {
+import { useSelector } from "react-redux/";
+
+/* The above code is a React component that is used to display a card with information about a
+superhero. */
+export default function HeroCard({ cardContent, url, }) {
+  const { toSearch } = useSelector(
+    (state) => state.allHeroes
+  );
   return (
     <>
       {/*Button trigger modal */}
@@ -8,11 +15,17 @@ export default function HeroCard({ cardContent, url, fullName }) {
         data-bs-toggle="modal"
         data-bs-target={`#${cardContent.name.split(" ").join("")}`}
       >
-        <img className="w-100" src={url} alt="" />
+        <img
+          className="w-100"
+          src={url}
+          alt=""
+        />
         <span className="fs-6 fw-semibold text-decoration-underline">
           {cardContent?.name}
         </span>
-        <span className="fs-6">{fullName}</span>
+        <span className="fs-6">
+          {cardContent.biography["fullName"]}
+        </span>
       </button>
 
       {/* Modal */}
@@ -42,28 +55,40 @@ export default function HeroCard({ cardContent, url, fullName }) {
                 <h3 className="text-decoration-underline">Poderes</h3>
                 <div>
                   <div className="d-flex flex-row justify-content-between">
-                    <div>{`Inteligencia: ${cardContent.powerstats.intelligence}`}</div>
-                    <div className="fw-bold">35</div>
+                    <div>{`Inteligencia:`}</div>
+                    <div className="fw-bold">
+                      {cardContent.powerstats.intelligence}
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between">
-                    <div>{`Fuerza: ${cardContent.powerstats.strength}`}</div>
-                    <div className="fw-bold">52</div>
+                    <div>{`Fuerza: `}</div>
+                    <div className="fw-bold">
+                      {cardContent.powerstats.strength}
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between">
-                    <div>{`Velocidad: ${cardContent.powerstats.speed}`}</div>
-                    <div className="fw-bold">86</div>
+                    <div>{`Velocidad: `}</div>
+                    <div className="fw-bold">
+                      {cardContent.powerstats.speed}
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between">
-                    <div>{`Durabilidad: ${cardContent.powerstats.durability} `}</div>
-                    <div className="fw-bold">42</div>
+                    <div>{`Durabilidad: `}</div>
+                    <div className="fw-bold">
+                      {cardContent.powerstats.durability}
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between">
-                    <div>{`Poder: ${cardContent.powerstats.power}`}</div>
-                    <div className="fw-bold">45</div>
+                    <div>{`Poder: `}</div>
+                    <div className="fw-bold">
+                      {cardContent.powerstats.power}
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between">
-                    <div>{`Combate: ${cardContent.powerstats.combat}`}</div>
-                    <div className="fw-bold">52</div>
+                    <div>{`Combate: `}</div>
+                    <div className="fw-bold">
+                      {cardContent.powerstats.combat}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -72,28 +97,46 @@ export default function HeroCard({ cardContent, url, fullName }) {
                 <h3 className="text-decoration-underline">Apariencia</h3>
                 <div>
                   <div className="d-flex flex-row justify-content-between">
-                    <div>{`Genero: ${cardContent.appearance.gender} `}</div>
-                    <div className="fw-bold">35</div>
+                    <div>{`Genero: `}</div>
+                    <div className="fw-bold">
+                      {cardContent.appearance.gender}
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between">
                     <div>Raza: </div>
-                    <div className="fw-bold">52</div>
+                    <div className="fw-bold">{cardContent.appearance.race}</div>
                   </div>
                   <div className="d-flex flex-row justify-content-between">
                     <div>Altura: </div>
-                    <div className="fw-bold">86</div>
+                    <div className="fw-bold">
+                      {cardContent.appearance.height[1]}
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between">
                     <div>Peso: </div>
-                    <div className="fw-bold">42</div>
+                    <div className="fw-bold">
+                      {cardContent.appearance.weight[1]}
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between align-items-center">
                     <div>Color ojos: </div>
-                    <div className="fw-bold">Amarillo</div>
+                    <div className="fw-bold">
+                      {
+                        cardContent.appearance[
+                          toSearch ? "eye-color" : "eyeColor"
+                        ]
+                      }
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between  align-items-center">
                     <div>Color cabello: </div>
-                    <div className="fw-bold">Blanco</div>
+                    <div className="fw-bold">
+                      {
+                        cardContent.appearance[
+                          toSearch ? "hair-color" : "hairColor"
+                        ]
+                      }
+                    </div>
                   </div>
                 </div>
               </div>

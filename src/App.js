@@ -1,25 +1,19 @@
 import "./App.css";
 import { useEffect } from "react";
 import Heroes from "./Pages/Heroes";
-import { setAllHeroesList } from "./redux/slices/allHeroes";
+import { fetchAllHeroes } from "./redux/slices/allHeroes";
 import { useDispatch } from "react-redux";
 
+/**
+ * We're using the useEffect hook to dispatch the fetchAllHeroes action creator when the component
+ * mounts
+ * @returns The Heroes component is being returned.
+ */
 function App() {
-  const dispath = useDispatch();
-
-  const fetchInfo = async () => {
-    const res = await fetch(process.env.React_App_URL_API_ALL);
-    try {
-      const data = await res.json();
-
-      dispath(setAllHeroesList(data));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchInfo();
+    dispatch(fetchAllHeroes());
   }, []);
 
   return <Heroes />;

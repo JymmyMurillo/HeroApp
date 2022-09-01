@@ -1,36 +1,97 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setToSearchResult, setToSearch } from "../redux/slices/allHeroes";
+import {
+  setAllHeroesList,
+  setToSearch,
+} from "../redux/slices/allHeroes";
+import { fetchAllHeroes } from "../redux/slices/allHeroes";
+import { useSelector } from "react-redux/";
 
+/**
+ * "When the input changes, set the search state to the value of the input, and if the input is empty,
+ * fetch all the heroes and set the state to search."
+ * 
+ * The handleInputChange function is an event handler
+ * @returns The return statement is returning a React element.
+ */
 export default function FiltersBar() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { allHeroesList } = useSelector((state) => state.allHeroes);
+
   const [search, setSearch] = useState("");
-  const [name, setName] = useState("N/A");
+  const [filterBy, setFilterBy] = useState("");
 
-  const fetchInfo = async (name) => {
-    setName(search);
-    const url = process.env.React_App_BASIC_URL_API + "search/" + name;
-    const res = await fetch(url);
-    try { 
-      const data = await res.json();
-      dispatch(setToSearchResult(data.results));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+/**
+ * When the input changes, set the search state to the value of the input, and if the input is empty,
+ * fetch all the heroes and set the state to search.
+ */
   const handleInputChange = ({ target }) => {
     setSearch(target.value);
     if (target.value.length === 0) {
-      dispatch(setToSearchResult(undefined));
-      setName("N/A");
+      setSearch("");
+      dispatch(fetchAllHeroes());
+      dispatch(setToSearch);
     }
   };
 
+/**
+ * It takes the search value from the input field and filters the allHeroesList array to only include
+ * the heroes that match the search value.
+ */
   const handleToSearch = () => {
-    fetchInfo(search);
+    const tmp = allHeroesList.filter((heroe) =>
+      heroe.name.toLowerCase().includes(search)
+    );
     dispatch(setToSearch(search));
-  }
+    dispatch(setAllHeroesList(tmp));
+  };
+
+
+/**
+ * "If the filterBy string is greater than 0, then set the allHeroesList to the filtered list."
+ * 
+ * The filterBy string is set by the user in the input field.
+ * 
+ * The filtered list is the result of the filter function.
+ * 
+ * The filter function is a function that takes a function as an argument.
+ * 
+ * The function that is passed to the filter function is an anonymous function.
+ * 
+ * The anonymous function takes a hero as an argument.
+ * 
+ * The anonymous function returns a boolean value.
+ * 
+ * The boolean value is the result of the comparison of the hero's label and field to the filterBy
+ * string.
+ * 
+ * The comparison is done by the ternary operator.
+ * 
+ * The ternary operator is a conditional operator.
+ * 
+ * The conditional operator is a comparison operator.
+ * 
+ * The comparison operator compares the hero
+ */
+  const handleFilter = (label, field) => {
+    const tmp = allHeroesList.filter((hero) =>
+      label === "powerstats"
+        ? parseInt(hero[label][field]) === parseInt(filterBy.trim())
+        : hero[label][field].toLowerCase() === filterBy.trim().toLowerCase()
+    );
+    if (filterBy.length > 0) dispatch(setAllHeroesList(tmp));
+  };
+
+/**
+ * When the user clicks the reset button, the search and filterBy state variables are reset to their
+ * default values, and the fetchAllHeroes action is dispatched.
+ */
+  const handleReset = () => {
+    setSearch("");
+    setFilterBy("");
+
+    dispatch(fetchAllHeroes());
+  };
 
   return (
     <>
@@ -74,25 +135,19 @@ export default function FiltersBar() {
             </form>
             <ul className="navbar-nav w-auto justify-content-around">
               <li className="nav-item dropdown">
-                <a
-                  className="nav-link active dropdown-toggle"
-                  href="0"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+                <button
+                  type="button"
+                  className="btn btn-danger border "
+                  onClick={handleReset}
                 >
-                  Ordenar:
-                </a>
+                  Eliminar Busqueda
+                </button>
                 <ul className="dropdown-menu w-25">
                   <li>
-                    <a className="dropdown-item" href="0">
-                      Nombre A-Z
-                    </a>
+                    <button className="dropdown-item">Nombre A-Z</button>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="0">
-                      Nombre Z-A
-                    </a>
+                    <button className="dropdown-item">Nombre Z-A</button>
                   </li>
                 </ul>
               </li>
@@ -115,28 +170,96 @@ export default function FiltersBar() {
                   <ul className="dropdown-menu p-1  w-25 position-absolute bg-warning bg-gradient  start-50 top-100 translate-middle-x">
                     <li className="">
                       <span className="px-3">Inteligencia:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() =>
+                          handleFilter("powerstats", "intelligence")
+                        }
+                      >
+                        ok
+                      </button>
                     </li>
                     <li className="">
                       <span className="px-3">Fuerza:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("powerstats", "strength")}
+                      >
+                        ok
+                      </button>
                     </li>
                     <li className="">
                       <span className="px-3">Velocidad:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("powerstats", "speed")}
+                      >
+                        ok
+                      </button>
                     </li>
                     <li className="">
                       <span className="px-3">Durabilidad:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("powerstats", "durability")}
+                      >
+                        ok
+                      </button>
                     </li>
                     <li className="">
                       <span className="px-3">Poder:</span>
 
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("powerstats", "power")}
+                      >
+                        ok
+                      </button>
                     </li>
                     <li className="">
                       <span className="px-3">Combate:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("powerstats", "combat")}
+                      >
+                        ok
+                      </button>
                     </li>
                   </ul>
                 </li>
@@ -153,27 +276,93 @@ export default function FiltersBar() {
                   <ul className="dropdown-menu me-5 w-25 position-absolute bg-warning bg-gradient start-50 top-100 translate-middle-x">
                     <li>
                       <span className="px-3">Genero:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("appearance", "gender")}
+                      >
+                        ok
+                      </button>
                     </li>
                     <li>
                       <span className="px-3">Raza:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("appearance", "race")}
+                      >
+                        ok
+                      </button>
                     </li>
                     <li>
                       <span className="px-3">Altura:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("appearance", "height")}
+                      >
+                        ok
+                      </button>
                     </li>
                     <li>
                       <span className="px-3">Peso:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("appearance", "weight")}
+                      >
+                        ok
+                      </button>
                     </li>
                     <li>
                       <span className="px-3">Color de ojos:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("appearance", "eyeColor")}
+                      >
+                        ok
+                      </button>
                     </li>
                     <li>
                       <span className="px-3">Color de cabello:</span>
-                      <input type="text" className="w-50 ms-5" />
+                      <input
+                        type="text"
+                        className="w-50 ms-5"
+                        onChange={(e) => setFilterBy(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-outline-warning fs-6 bg-danger ms-5 text-light"
+                        type="button"
+                        onClick={() => handleFilter("appearance", "hairColor")}
+                      >
+                        ok
+                      </button>
                     </li>
                   </ul>
                 </li>
@@ -182,15 +371,6 @@ export default function FiltersBar() {
           </div>
         </div>
       </nav>
-      <div className="d-flex flex-wrap justify-content-evenly align-items-center bg-dark text-light p-2">
-        <span>Busqueda aplicada ={">"} </span>
-        <span>{`Nombre: ${name}`}</span>
-        <span>Poder: N/A</span>
-        <span>Apariencia: N/A</span>
-        <button type="button" className="btn btn-danger border ">
-          Eliminar Busqueda
-        </button>
-      </div>
     </>
   );
 }
