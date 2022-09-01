@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/HeroApp/static/css/main.e6c13ad2.css",
+    "main.js": "/HeroApp/static/js/main.8f5c5bc6.js",
+    "static/js/787.ec666379.chunk.js": "/HeroApp/static/js/787.ec666379.chunk.js",
+    "index.html": "/HeroApp/index.html",
+    "main.e6c13ad2.css.map": "/HeroApp/static/css/main.e6c13ad2.css.map",
+    "main.8f5c5bc6.js.map": "/HeroApp/static/js/main.8f5c5bc6.js.map",
+    "787.ec666379.chunk.js.map": "/HeroApp/static/js/787.ec666379.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.8f5c5bc6.js"
+  ]
+}
