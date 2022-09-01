@@ -1,70 +1,27 @@
-# Getting Started with Create React App
+# *HEROES APP*
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este proyecto se inició con [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+----
+## Organización de Carpetas
 
-In the project directory, you can run:
+Dentro de *src*  se agregaron los siguientes elementos:
 
-### `npm start`
+- *Components*: se encuentran los elementos más pequeños que unidos conformaran una página, para este desarrollo son los siguientes:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+    1.  FiltersBar.jsx : contiene la funcionalidad en javascript y retorna html donde se visualizara un logo, una barra de búsqueda y filtros según poderes o apariencia aplicables a todos los Heroes.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+     2. HeroCard.jsx : inicialmente presenta una imagen, nombre de supeheroe y nombre real (si existe), al hacer clic sobre la card, se despliega un modal con información de todos sus poderes y apariencia, incluyendo también una imagen.
 
-### `npm test`
+- *Pages*: utiliza más de un componente y se ubican de forma que generan un dashboard o página de visualización, para esta aplicación se ha construido una única página:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    Heroes.jsx : aquí se unen los únicos componentes existentes ya nombrados, desde la barra de filtros se podrá buscar algún heroe especifico o buscar aquellos que poseen algún rasgo especifico en cuanto a poderes o apariencia, a la vez que se visualizan en pantalla al hacer clic en el botón BUSCAR.
 
-### `npm run build`
+- *Redux*: se implementó este observador de estados, que permite acceder desde cualquier componente a la información que queramos manejar, dentro se encuentran los diferentes archivos necesarios para su implementación.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
+---
+## NOTAS 
+### - Todos los estilos visualizados en el desarrollo de esta aplicacion fueron sustraídos de Bootstrap v5.2.0, por ende, cualquier hoja de estilos existente, esta vacía y puede ser usada a futuro.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### - Node Version 18.8.0
